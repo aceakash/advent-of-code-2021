@@ -53,7 +53,7 @@ func TestPartTwo(t *testing.T) {
 260
 263`, 5},
 
-		{`prob to solve`, MustReadFile(), 1553},
+		{`prob to solve`, MustReadFile(), 1597},
 	}
 
 	for _, td := range testData {
