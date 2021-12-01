@@ -6,26 +6,30 @@ import (
 
 func PartOne(input string) int {
 	readings := MustParseInputAsInts(input)
+	return solveForWindowSize(readings, 1)
+}
 
+func PartTwo(input string) int {
+	readings := MustParseInputAsInts(input)
+	return solveForWindowSize(readings, 3)
+}
+
+func solveForWindowSize(readings []int, windowSize int) int {
 	count := 0
-	for i := 1; i < len(readings); i++ {
-		if readings[i] > readings[i-1] {
+	for i := windowSize; i < len(readings); i++ {
+		prevWindow := sumWindow(readings, i-1, windowSize)
+		currWindow := sumWindow(readings, i, windowSize)
+		if currWindow > prevWindow {
 			count++
 		}
 	}
 	return count
 }
 
-func PartTwo(input string) int {
-	readings := MustParseInputAsInts(input)
-
-	count := 0
-	for i := 3; i < len(readings); i++ {
-		prevWindow := readings[i-1] + readings[i-2] + readings[i-3]
-		currWindow := readings[i] + readings[i-1] + readings[i-2]
-		if currWindow > prevWindow {
-			count++
-		}
+func sumWindow(readings []int, lastIndex int, windowSize int) int {
+	sum := 0
+	for i := 0; i < windowSize; i++ {
+		sum += readings[lastIndex-i]
 	}
-	return count
+	return sum
 }
