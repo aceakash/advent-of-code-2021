@@ -1,5 +1,6 @@
 def part_one()
-    readings = read_input_file_lines()[0]
+    readings = read_input_file_lines()
+    # readings = ["10", "11", "01"]
 
     most_common_bits = get_most_common_bits(readings) # 10111
     least_common_bits = invert(most_common_bits)
@@ -8,6 +9,49 @@ def part_one()
     epsilon = bin_to_dec(least_common_bits)
 
     return gamma * epsilon
+end
+
+def get_most_common_bits(readings)
+    width = readings[0].length
+    positional_bits = []
+    (0..width-1).each do |i|
+        bap = get_bits_at_position(readings, i)
+        positional_bits.push(bap)
+    end
+    
+    most_common = find_most_common(positional_bits)
+    return most_common
+end
+
+def get_bits_at_position(readings, pos) 
+    bits = ""
+    readings.each do |r|
+        bits += r[pos]
+    end
+    return bits
+end
+
+def find_most_common(positional_bits) 
+    most_common = ""
+    positional_bits.each do |p| 
+        if p.count("1") > p.length/2
+            most_common += "1"
+        else
+            most_common += "0"
+        end
+    end
+    return most_common
+end
+
+def invert(bits)
+    inverted = bits.chars.map do |c| 
+        c == "0" ? "1" : "0"
+    end
+    return inverted.join ""
+end
+
+def bin_to_dec(str) 
+    return str.to_i(2)
 end
 
 def read_input_file_lines()
