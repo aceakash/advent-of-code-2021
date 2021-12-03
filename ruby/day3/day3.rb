@@ -12,20 +12,40 @@ def part_one()
 end
 
 def part_two()
-    # readings = read_input_file_lines()
-    readings = ["10", "11", "01"]
+    readings = read_input_file_lines()
+    readings = ["00100",
+    "11110",
+    "10110",
+    "10111",
+    "10101",
+    "01111",
+    "00111",
+    "11100",
+    "10000",
+    "11001",
+    "00010",
+    "01010"]
 
-    pos = 0
-    r1 = readings.dup
-    while r1.length > 1
-        bits = get_bits_at_position(r1, pos)
-        most_common_bit = find_most_common(bits)
-        r1 = only_keep_starting_with(r1, most_common_bit)
-        pos += 1
+    reduced = work_on(readings, 0)
+    return reduced
+end
+
+def work_on(readings, bit_index) 
+    puts "readings: #{readings}"
+
+    if readings.length == 1
+        return readings[0]
     end
 
-    return r1[0]
+    most_common = get_most_common_bits(readings)[bit_index]
+    puts "most_common: #{most_common}"
+    filtered_readings = readings.filter { |r| r[bit_index] == most_common }
+    puts "filtered_readings: #{filtered_readings}"
+
+    return work_on(filtered_readings, bit_index + 1)
 end
+
+
 
 def only_keep_starting_with(readings, bit_char)
     return readings.select {|r| r.start_with? bit_char } 
@@ -54,7 +74,7 @@ end
 def find_most_common(positional_bits) 
     most_common = ""
     positional_bits.each do |p| 
-        if p.count("1") > p.length/2
+        if p.count("1") * 2  >= p.length
             most_common += "1"
         else
             most_common += "0"
@@ -83,4 +103,4 @@ end
 
 puts "Part one: #{part_one()}"
 
-puts "Part two: #{part_two()}"
+# puts "Part two: #{part_two()}"
