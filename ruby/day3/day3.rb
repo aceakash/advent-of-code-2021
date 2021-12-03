@@ -1,8 +1,7 @@
 def part_one()
     readings = read_input_file_lines()
-    # readings = ["10", "11", "01"]
 
-    most_common_bits = get_most_or_least_common_bits(readings, :find_most_common) # 10111
+    most_common_bits = get_most_or_least_common_bits(readings, :find_most_common)
     least_common_bits = invert(most_common_bits)
 
     gamma = bin_to_dec(most_common_bits)
@@ -13,10 +12,10 @@ end
 
 def part_two()
     readings = read_input_file_lines()
-    most_common = process(readings, 0, "most")
-    least_common = process(readings, 0, "least")
+    oxygenRating = process(readings, 0, "most")
+    co2Rating = process(readings, 0, "least")
 
-    return bin_to_dec(most_common) * bin_to_dec(least_common)
+    return bin_to_dec(oxygenRating) * bin_to_dec(co2Rating)
 end
 
 def process(readings, bit_index, most_or_least) 
