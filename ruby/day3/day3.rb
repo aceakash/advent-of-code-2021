@@ -11,6 +11,26 @@ def part_one()
     return gamma * epsilon
 end
 
+def part_two()
+    # readings = read_input_file_lines()
+    readings = ["10", "11", "01"]
+
+    pos = 0
+    r1 = readings.dup
+    while r1.length > 1
+        bits = get_bits_at_position(r1, pos)
+        most_common_bit = find_most_common(bits)
+        r1 = only_keep_starting_with(r1, most_common_bit)
+        pos += 1
+    end
+
+    return r1[0]
+end
+
+def only_keep_starting_with(readings, bit_char)
+    return readings.select {|r| r.start_with? bit_char } 
+end
+
 def get_most_common_bits(readings)
     width = readings[0].length
     positional_bits = []
@@ -62,3 +82,5 @@ end
 
 
 puts "Part one: #{part_one()}"
+
+puts "Part two: #{part_two()}"
