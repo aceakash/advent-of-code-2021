@@ -2,7 +2,7 @@ def part_one()
     readings = read_input_file_lines()
     # readings = ["10", "11", "01"]
 
-    most_common_bits = get_most_common_bits(readings) # 10111
+    most_common_bits = get_most_or_least_common_bits(readings, :find_most_common) # 10111
     least_common_bits = invert(most_common_bits)
 
     gamma = bin_to_dec(most_common_bits)
@@ -13,62 +13,29 @@ end
 
 def part_two()
     readings = read_input_file_lines()
-    # readings = ["00100",
-    # "11110",
-    # "10110",
-    # "10111",
-    # "10101",
-    # "01111",
-    # "00111",
-    # "11100",
-    # "10000",
-    # "11001",
-    # "00010",
-    # "01010"]
+    most_common = process(readings, 0, "most")
+    least_common = process(readings, 0, "least")
 
-    reduced = work_on(readings, 0)
-
-    reduced2 = work_on2(readings, 0)
-    return bin_to_dec(reduced) * bin_to_dec(reduced2)
+    return bin_to_dec(most_common) * bin_to_dec(least_common)
 end
 
-def work_on(readings, bit_index) 
-    # puts "readings: #{readings}"
-
+def process(readings, bit_index, most_or_least) 
     if readings.length == 1
         return readings[0]
     end
 
-    most_common = get_most_common_bits(readings)[bit_index]
-    # puts "most_common: #{most_common}"
+    func = most_or_least == "most" ? :find_most_common : :find_least_common
+
+    most_common = get_most_or_least_common_bits(readings, func)[bit_index]
     filtered_readings = readings.filter { |r| r[bit_index] == most_common }
-    # puts "filtered_readings: #{filtered_readings}"
-
-    return work_on(filtered_readings, bit_index + 1)
+    return process(filtered_readings, bit_index + 1, most_or_least)
 end
-
-def work_on2(readings, bit_index)
-    # puts "readings: #{readings}"
-
-    if readings.length == 1
-        return readings[0]
-    end
-
-    least_common = get_least_common_bits(readings)[bit_index]
-    # puts "least_common: #{least_common}"
-    filtered_readings = readings.filter { |r| r[bit_index] == least_common }
-    # puts "filtered_readings: #{filtered_readings}"
-    # puts "========="
-    return work_on2(filtered_readings, bit_index + 1)
-end
-
-
 
 def only_keep_starting_with(readings, bit_char)
     return readings.select {|r| r.start_with? bit_char } 
 end
 
-def get_most_common_bits(readings)
+def get_most_or_least_common_bits(readings, find_least_or_most_common)
     width = readings[0].length
     positional_bits = []
     (0..width-1).each do |i|
@@ -76,20 +43,8 @@ def get_most_common_bits(readings)
         positional_bits.push(bap)
     end
     
-    most_common = find_most_common(positional_bits)
-    return most_common
-end
-
-def get_least_common_bits(readings)
-    width = readings[0].length
-    positional_bits = []
-    (0..width-1).each do |i|
-        bap = get_bits_at_position(readings, i)
-        positional_bits.push(bap)
-    end
-    
-    least_common = find_least_common(positional_bits)
-    return least_common
+    least_or_most_common = method(find_least_or_most_common).call(positional_bits)
+    return least_or_most_common
 end
 
 def get_bits_at_position(readings, pos) 
