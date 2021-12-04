@@ -3,6 +3,7 @@ package advent_of_code_2021
 import (
 	"log"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -36,8 +37,13 @@ func MustParseCsvOfInts(csv string) []int {
 	numStrs := strings.Split(csv, ",")
 
 	nums := make([]int, len(numStrs))
-	for _, v := range numStrs {
-		nums = append(nums, MustParseInt(v))
+	for i, v := range numStrs {
+		nums[i] = MustParseInt(v)
 	}
 	return nums
+}
+
+func CollapseSpaces(input string) string {
+	r := regexp.MustCompile(`[ ]+`)
+	return strings.TrimSpace(r.ReplaceAllString(input, " "))
 }
