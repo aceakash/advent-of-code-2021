@@ -17,7 +17,7 @@ func TestPartOne(t *testing.T) {
 		args args
 		want int
 	}{
-		{name: "main input", want: 0, args: args{MustReadFile()}},
+		{name: "main input", want: 28082, args: args{MustReadFile()}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

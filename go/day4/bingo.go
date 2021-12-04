@@ -50,20 +50,14 @@ func parseInput(input string) ([]int, []*Board) {
 func NewBoard(input string) *Board {
 	cells := []Cell{}
 	lines := strings.Split(input, "\n")
-	//fmt.Println(len(lines))
 	for _, l := range lines {
-		//fmt.Println("line", l)
 		l = CollapseSpaces(l)
-		fmt.Println("line", l)
 		l2 := strings.TrimSpace(strings.Join(strings.Split(l, " "), ","))
-		fmt.Println("l2", l2)
 		nums := MustParseCsvOfInts(l2)
-		//fmt.Println("nums", nums)
 		for _, n := range nums {
 			cells = append(cells, Cell{n, false})
 		}
 	}
-
 	return &Board{cells}
 }
 
@@ -82,12 +76,6 @@ func (b *Board) PlayNumber(num int) {
 			b.cells[i].isMarked = true
 		}
 	}
-	for _, c := range b.cells {
-		if c.isMarked {
-			fmt.Println("===========", c)
-		}
-	}
-
 }
 
 func (b *Board) IsSolved() bool {
@@ -139,7 +127,6 @@ func (b *Board) SumOfUnmarkedNumbers() int {
 }
 
 func (b *Board) String() string {
-	fmt.Println("b cells count", len(b.cells))
 	str := ""
 	for i, cell := range b.cells {
 		if i % 5 == 0 {
