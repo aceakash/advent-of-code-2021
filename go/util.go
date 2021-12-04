@@ -31,3 +31,13 @@ func MustParseInputAsInts(input string) []int {
 	}
 	return readings
 }
+
+func MustParseCsvOfInts(csv string) []int {
+	numStrs := strings.Split(csv, ",")
+
+	nums := make([]int, len(numStrs))
+	for _, v := range numStrs {
+		nums = append(nums, MustParseInt(v))
+	}
+	return nums
+}
