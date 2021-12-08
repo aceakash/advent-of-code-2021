@@ -24,8 +24,65 @@ def part_one(input):
     items = parse_input(input)                    # ['line1', 'line2']
     # print(items)
     
-
     return count_1_4_7_8s(items)
+
+def part_two(input):
+    
+
+    items = parse_input(input)
+    total = 0
+    for item in items:
+        nums = extract_nums(item)
+        total += sum(nums)
+
+    return total
+    
+def extract_nums(item):
+    lookup = make_lookup(item)
+    # lookup = {
+    #     'abcdefg': 8,
+    #     'bcdef': 5,
+    #     'acdfg': 2,
+    #     'abcdf': 3,
+    #     'abd': 7,
+    #     'abcdef': 9,
+    #     'bcdefg': 6,
+    #     'abef': 4,
+    #     'abcdeg': 0,
+    #     'ab': 1
+    # }
+    strs = item['four_segments']
+    nums = []
+    for s in strs:
+        s2 = ''.join(sorted(s))
+        if s2 == 'bceg':
+            print(item)
+        num_str = lookup[s2]
+        nums.append(int(num_str))        
+    return nums
+
+def make_lookup(item):
+    unknowns = []
+    lookups = {}
+    for s in item['ten_segments']:
+        s2 = ''.join(sorted(s))
+        if len(s2) == 2:
+            lookups[s2] = '1'
+            continue
+        if len(s2) == 3:
+            lookups[s2] = '7'
+            continue
+        if len(s2) == 7:
+            lookups[s2] = '8'
+            continue  
+        if len(s2) == 4:
+            lookups[s2] = '4'
+            continue  
+        unknowns.append(s2)
+    
+    print(lookups)
+    print(unknowns)
+    return lookups
 
 def parse_input(input):
     lines = input.split('\n')
@@ -57,6 +114,8 @@ def count_1_4_7_8s(items):
 
 
 if __name__ == "__main__":
-    # print(part_one(example1()))
-    # print(part_one(example2()))
-    print(part_one(real_input()))
+    # print(part_one(real_input()))
+
+    print(part_two(example1()))
+    # print(part_two(example2()))
+    # print(part_two(real_input()))
