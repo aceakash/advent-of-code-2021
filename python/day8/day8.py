@@ -14,6 +14,9 @@ def example1():
     return """acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf"""
 
 
+def example3():
+    return """cf bcdf acf abcdefg abdfg acdfg acdeg abcdfg abcefg abdefg | acdeg acdeg acdeg acdeg"""
+
 def real_input():
     with open("input.txt") as file:
         return file.read()
@@ -55,8 +58,6 @@ def extract_nums(item):
     nums = []
     for s in strs:
         s2 = ''.join(sorted(s))
-        if s2 == 'bceg':
-            print(item)
         num_str = lookup[s2]
         nums.append(int(num_str))        
     return nums
@@ -77,12 +78,42 @@ def make_lookup(item):
             continue  
         if len(s2) == 4:
             lookups[s2] = '4'
-            continue  
+            continue
         unknowns.append(s2)
-    
+
+    find_two(lookups, unknowns, item)
     print(lookups)
     print(unknowns)
     return lookups
+
+def find_two(lookups, unknowns, item):
+    # the code for two is not a subset of any other unknowns
+    five_letters = [x for x in unknowns if len(x) == 5]
+    six_letters = [x for x in unknowns if len(x) == 6]
+
+    two_code = None
+    for fl in five_letters:
+        found_subset = False
+        for sl in six_letters:
+            if is_subset(fl, sl):
+                found_subset = True 
+                break
+        if not found_subset:
+            two_code = fl
+            break
+
+    if two_code == None:
+        print('code for two was not found. there is a prob with the code')
+        exit(1)
+    
+    lookups[two_code] = '2'
+    unknowns.remove(two_code)
+
+
+def is_subset(needle, haystack):
+    unique = set(needle).difference(set(haystack))
+    return len(unique) == 0
+
 
 def parse_input(input):
     lines = input.split('\n')
@@ -116,6 +147,6 @@ def count_1_4_7_8s(items):
 if __name__ == "__main__":
     # print(part_one(real_input()))
 
-    print(part_two(example1()))
+    print(part_two(example3()))
     # print(part_two(example2()))
     # print(part_two(real_input()))
