@@ -22,11 +22,10 @@ def real_input():
 def part_one(input):
     # how many segments of 2,3,4,7 lengths?
     items = parse_input(input)                    # ['line1', 'line2']
-    print(items)
+    # print(items)
     
-    digit_strings = extract_digit_strings(items)  # [['abcde', 'bcdefr'], ['abcde', 'bcdefr'], ['abcde', 'bcdefr']]
 
-    return count_1_4_7_8s(digit_strings)
+    return count_1_4_7_8s(items)
 
 def parse_input(input):
     lines = input.split('\n')
@@ -45,14 +44,19 @@ def parse_input(input):
 
     return items
 
-def extract_digit_strings(inputs):
-    return []
 
-def count_1_4_7_8s(digit_strings):
-    return 0
+def count_1_4_7_8s(items):
+    count = 0
+    for item in items:
+        strs = item['four_segments']
+        for s in strs:
+            if len(s) == 2 or len(s) == 4 or len(s) == 3 or len(s) == 7:
+                count += 1
+    
+    return count
 
 
 if __name__ == "__main__":
     # print(part_one(example1()))
-    print(part_one(example2()))
-    # print(part_one(real_input()))
+    # print(part_one(example2()))
+    print(part_one(real_input()))
