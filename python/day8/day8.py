@@ -15,7 +15,7 @@ def example1():
 
 
 def example3():
-    return """cf bcdf acf abcdefg abdfg acdfg acdeg abcdfg abcefg abdefg | acdeg acdeg acdeg acdeg"""
+    return """cf bcdf acf abcdefg abdfg acdfg acdeg abcdfg abcefg abdefg | acdeg acdfg acdeg acdfg"""
 
 def real_input():
     with open("input.txt") as file:
@@ -30,17 +30,15 @@ def part_one(input):
     return count_1_4_7_8s(items)
 
 def part_two(input):
-    
-
     items = parse_input(input)
     total = 0
     for item in items:
-        nums = extract_nums(item)
-        total += sum(nums)
+        nums = extract_num(item)
+        total += nums
 
     return total
     
-def extract_nums(item):
+def extract_num(item):
     lookup = make_lookup(item)
     # lookup = {
     #     'abcdefg': 8,
@@ -55,12 +53,13 @@ def extract_nums(item):
     #     'ab': 1
     # }
     strs = item['four_segments']
-    nums = []
+    nums = ''
     for s in strs:
         s2 = ''.join(sorted(s))
         num_str = lookup[s2]
-        nums.append(int(num_str))        
-    return nums
+        nums += num_str
+    
+    return int(nums)
 
 def make_lookup(item):
     unknowns = []
@@ -81,7 +80,8 @@ def make_lookup(item):
             continue
         unknowns.append(s2)
 
-    find_two(lookups, unknowns, item)
+    two_code = find_two(lookups, unknowns, item)
+    find_three(two_code, lookups, unknowns, item)
     print(lookups)
     print(unknowns)
     return lookups
@@ -108,6 +108,28 @@ def find_two(lookups, unknowns, item):
     
     lookups[two_code] = '2'
     unknowns.remove(two_code)
+    return two_code
+
+def find_three(two_code, lookups, unknowns, item):
+    # the code for three is one letter off from the code for two
+    five_letters = [x for x in unknowns if len(x) == 5]
+    print("===" ,five_letters)
+
+    three_code = None
+    
+    for fl in five_letters:
+        if len(set(fl).difference(set(two_code))) == 1:
+            three_code = fl
+            break
+
+
+
+    if three_code == None:
+        print('code for three was not found. there is a prob with the code')
+        exit(1)
+    
+    lookups[three_code] = '3'
+    unknowns.remove(three_code)
 
 
 def is_subset(needle, haystack):
