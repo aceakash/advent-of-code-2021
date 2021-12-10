@@ -5,6 +5,13 @@ import (
 	"strings"
 )
 
+var openingToClosingMap = map[string]string{
+	"(": ")",
+	"{": "}",
+	"<": ">",
+	"[": "]",
+}
+
 func PartOne(input string) int {
 	lines := parseLines(input)
 
@@ -52,15 +59,12 @@ func calcCompletionScore(seq string) int {
 }
 
 func sequenceRequiredToClose(line string) string {
-
 	/*
-
 		continuously remove all () {} [] <>  till none remain
 		[({(<(())[]>[[{[]{<()<>>   --->   [({([[{{
 
-		now just close all open ones (starting from the top of the stack or end of the string)
+		then just close all open ones (starting from the top of the stack or end of the string)
 	*/
-
 	for {
 		newLine := removePairs(line)
 		if len(newLine) == len(line) {
@@ -70,24 +74,18 @@ func sequenceRequiredToClose(line string) string {
 	}
 	seq := findSimpleClosingSeq(line)
 	return seq
-
-	//switch line {
-	//case "[({(<(())[]>[[{[]{<()<>>":
-	//	return "}}]])})]"
-	//case "[(()[<>])]({[<{<<[]>>(":
-	//	return ")}>]})"
-	//case "(((({<>}<{<{<>}{[]{[]{}":
-	//	return "}}>}>))))"
-	//case "{<[[]]>}<{[{[{[]{()[[[]":
-	//	return "]]}}]}]}>"
-	//case "<{([{{}}[<[[[<>{}]]]>[]]":
-	//	return "])}>"
-	//default:
-	//	return ""
 }
 
 func findSimpleClosingSeq(line string) string {
-	return "}}]])})]"
+	seq := ""
+	for _, r := range line {
+		seq = getClosingFor(string(r)) + seq
+	}
+	return seq
+}
+
+func getClosingFor(s string) string {
+	return openingToClosingMap[s]
 }
 
 func removePairs(line string) string {
@@ -154,13 +152,6 @@ func FindFirstWrongCloser(line string) string {
 }
 
 // ----
-var openingToClosingMap = map[string]string{
-	"(": ")",
-	"{": "}",
-	"<": ">",
-	"[": "]",
-}
-
 func isClosing(sr string) bool {
 	for _, v := range openingToClosingMap {
 		if v == sr {
