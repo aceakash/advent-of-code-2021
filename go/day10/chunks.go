@@ -2,6 +2,7 @@ package day10
 
 import (
 	"github.com/aceakash/advent-of-code-2021/day10/stack"
+	"sort"
 	"strings"
 )
 
@@ -28,17 +29,21 @@ func PartTwo(input string) int {
 
 	incompleteLines := filterOutCorruptedLines(lines)
 
-	completionScores := []int{}
-	for _, line := range incompleteLines {
+	completionScores := make([]int, len(incompleteLines))
+	for i, line := range incompleteLines {
 		seq := sequenceRequiredToClose(line)
-		completionScores = append(completionScores, calcCompletionScore(seq))
+		completionScores[i] = calcCompletionScore(seq)
 	}
-	answer := median(completionScores)
-	return answer
+	return median(completionScores)
 }
 
 func median(nums []int) int {
-	return nums[0]
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	sort.Ints(nums)
+	midIndex := (len(nums) + 1) / 2
+	return nums[midIndex]
 }
 
 func calcCompletionScore(seq string) int {
@@ -76,13 +81,9 @@ func sequenceRequiredToClose(line string) string {
 func findSimpleClosingSeq(line string) string {
 	seq := ""
 	for _, r := range line {
-		seq = getClosingFor(string(r)) + seq
+		seq = openingToClosingMap[string(r)] + seq
 	}
 	return seq
-}
-
-func getClosingFor(s string) string {
-	return openingToClosingMap[s]
 }
 
 func removePairs(line string) string {
@@ -148,7 +149,6 @@ func FindFirstWrongCloser(line string) string {
 	return firstWrongCloser
 }
 
-// ----
 func isClosing(sr string) bool {
 	for _, v := range openingToClosingMap {
 		if v == sr {
