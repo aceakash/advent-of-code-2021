@@ -1,0 +1,5 @@
+{
+  "test_day9.py::test_answer": true,
+  "test_day9.py::test_part_one_real_file": true,
+  "test_day9.py::test_part_one_with_simple1": true
+}
