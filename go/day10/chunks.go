@@ -53,14 +53,13 @@ func calcCompletionScore(seq string) int {
 
 func sequenceRequiredToClose(line string) string {
 
-
 	/*
 
-	continuously remove all () {} [] <>  till none remain
-	[({(<(())[]>[[{[]{<()<>>   --->   [({([[{{ }}]])})]
+		continuously remove all () {} [] <>  till none remain
+		[({(<(())[]>[[{[]{<()<>>   --->   [({([[{{
 
-	now just close all open ones (starting from the top of the stack or end of the string)
-	 */
+		now just close all open ones (starting from the top of the stack or end of the string)
+	*/
 
 	for {
 		newLine := removePairs(line)
@@ -85,7 +84,14 @@ func sequenceRequiredToClose(line string) string {
 	//	return "])}>"
 	//default:
 	//	return ""
-	}
+}
+
+func findSimpleClosingSeq(line string) string {
+	return "}}]])})]"
+}
+
+func removePairs(line string) string {
+	return "[({([[{{"
 }
 
 func filterOutCorruptedLines(allLines []string) []string {

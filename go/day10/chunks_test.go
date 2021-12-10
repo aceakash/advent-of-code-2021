@@ -178,3 +178,9 @@ func TestPartTwo(t *testing.T) {
 
 	assert.Equal(t, 288957, PartTwo(input))
 }
+
+func TestPartTwo_OneLine(t *testing.T) {
+	input := `[({(<(())[]>[[{[]{<()<>>`
+
+	assert.Equal(t, 288957, PartTwo(input))
+}
