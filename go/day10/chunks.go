@@ -1,7 +1,6 @@
 package day10
 
 import (
-	"fmt"
 	"github.com/aceakash/advent-of-code-2021/day10/stack"
 	"strings"
 )
@@ -21,7 +20,6 @@ func PartTwo(input string) int {
 	lines := parseLines(input)
 
 	incompleteLines := filterOutCorruptedLines(lines)
-	fmt.Println(incompleteLines)
 
 	completionScores := []int{}
 	for _, line := range incompleteLines {
@@ -54,19 +52,39 @@ func calcCompletionScore(seq string) int {
 }
 
 func sequenceRequiredToClose(line string) string {
-	switch line {
-	case "[({(<(())[]>[[{[]{<()<>>":
-		return "}}]])})]"
-	case "[(()[<>])]({[<{<<[]>>(":
-		return ")}>]})"
-	case "(((({<>}<{<{<>}{[]{[]{}":
-		return "}}>}>))))"
-	case "{<[[]]>}<{[{[{[]{()[[[]":
-		return "]]}}]}]}>"
-	case "<{([{{}}[<[[[<>{}]]]>[]]":
-		return "])}>"
-	default:
-		return ""
+
+
+	/*
+
+	continuously remove all () {} [] <>  till none remain
+	[({(<(())[]>[[{[]{<()<>>   --->   [({([[{{ }}]])})]
+
+	now just close all open ones (starting from the top of the stack or end of the string)
+	 */
+
+	for {
+		newLine := removePairs(line)
+		if len(newLine) == len(line) {
+			break
+		}
+		line = newLine
+	}
+	seq := findSimpleClosingSeq(line)
+	return seq
+
+	//switch line {
+	//case "[({(<(())[]>[[{[]{<()<>>":
+	//	return "}}]])})]"
+	//case "[(()[<>])]({[<{<<[]>>(":
+	//	return ")}>]})"
+	//case "(((({<>}<{<{<>}{[]{[]{}":
+	//	return "}}>}>))))"
+	//case "{<[[]]>}<{[{[{[]{()[[[]":
+	//	return "]]}}]}]}>"
+	//case "<{([{{}}[<[[[<>{}]]]>[]]":
+	//	return "])}>"
+	//default:
+	//	return ""
 	}
 }
 

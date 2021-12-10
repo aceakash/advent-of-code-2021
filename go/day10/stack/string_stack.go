@@ -24,8 +24,11 @@ func (s *StringStack) Pop() (string, bool) {
 	return popped, true
 }
 
-func (s *StringStack) Peek() string {
-	return s.stack[len(s.stack)-1]
+func (s *StringStack) Peek() (string, bool) {
+	if len(s.stack) == 0 {
+		return "", false
+	}
+	return s.stack[len(s.stack)-1], true
 }
 
 func (s *StringStack) String() string {
