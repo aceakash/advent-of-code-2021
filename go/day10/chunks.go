@@ -2,25 +2,33 @@ package day10
 
 import (
 	"fmt"
+	"github.com/aceakash/advent-of-code-2021/day10/stack"
 	"strings"
 )
 
 func FindFirstWrongCloser(input string) string {
+	fmt.Println(input)
 	if len(strings.TrimSpace(input)) == 0 {
 		return ""
 	}
 
-	stack := NewStack()
+	stringStack := stack.NewStringStack()
+	fmt.Println("stringStack when created", stringStack)
 	firstWrongCloser := ""
 	for _, r := range input {
-		fmt.Println(stack)
 		sr := string(r)
+		fmt.Println("sr", sr)
+		fmt.Println("stringStack", stringStack)
 		if isOpening(sr) {
-			stack.Push(sr)
+			stringStack.Push(sr)
 			continue
 		}
 		if isClosing(sr) {
-			popped := stack.Pop()
+			popped, ok := stringStack.Pop()
+			if !ok {
+				firstWrongCloser = sr
+				break
+			}
 			if popped != sr {
 				firstWrongCloser = sr
 				break

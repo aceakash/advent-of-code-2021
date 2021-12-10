@@ -1,7 +1,5 @@
 package stack
 
-import "fmt"
-
 type StringStack struct {
 	stack []string
 }
@@ -31,5 +29,11 @@ func (s *StringStack) Peek() string {
 }
 
 func (s *StringStack) String() string {
-	return fmt.Sprintf("BOTTOM |  %v  | TOP", s.stack)
+	str := "BOTTOM |  "
+	for _, r := range(s.stack) {
+		sr := string(r)
+		str += sr + " "
+	}
+	str += " | TOP"
+	return str
 }
