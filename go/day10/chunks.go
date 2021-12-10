@@ -16,6 +16,20 @@ func PartOne(input string) int {
 	return totalSyntaxErrorScore
 }
 
+func PartTwo(input string) int {
+	lines := parseLines(input)
+
+	incompleteLines := filterOutCorruptedLines(lines)
+
+	completionScores := []int{}
+	for _, line := range(incompleteLines) {
+		seq := sequenceRequiredToClose(line)
+		completionScore := calcCompletionScore(seq)
+	}
+	answer := median(completionScores)
+	return answer
+}
+
 func parseLines(input string) []string {
 	return strings.Split(input, "\n")
 }
