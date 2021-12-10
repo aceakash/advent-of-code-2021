@@ -91,7 +91,11 @@ func findSimpleClosingSeq(line string) string {
 }
 
 func removePairs(line string) string {
-	return "[({([[{{"
+	s1 := strings.ReplaceAll(line, "{}", "")
+	s2 := strings.ReplaceAll(s1, "[]", "")
+	s3 := strings.ReplaceAll(s2, "<>", "")
+	s4 := strings.ReplaceAll(s3, "()", "")
+	return s4
 }
 
 func filterOutCorruptedLines(allLines []string) []string {
