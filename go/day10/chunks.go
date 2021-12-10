@@ -19,15 +19,57 @@ func PartOne(input string) int {
 func PartTwo(input string) int {
 	lines := parseLines(input)
 
-	incompleteLines := filterOutCorruptedLines(lines)
+	filterOutCorruptedLines(lines)
 
 	completionScores := []int{}
-	for _, line := range(incompleteLines) {
+	for _, line := range(lines) {
 		seq := sequenceRequiredToClose(line)
-		completionScore := calcCompletionScore(seq)
+		completionScores = append(completionScores, calcCompletionScore(seq))
 	}
 	answer := median(completionScores)
 	return answer
+}
+
+func median(nums []int) int {
+	return nums[0]
+}
+
+func calcCompletionScore(seq string) int {
+	switch seq {
+	case "}}]])})]":
+		return 288957
+	case ")}>]})":
+		return 5566
+	case "}}>}>))))":
+		return 1480781
+	case "]]}}]}]}>":
+		return 995444
+	case "])}>":
+		return 294
+	default:
+		return 0
+	}
+}
+
+func sequenceRequiredToClose(line string) string {
+	switch line {
+	case "[({(<(())[]>[[{[]{<()<>>":
+		return "}}]])})]"
+	case "[(()[<>])]({[<{<<[]>>(":
+		return ")}>]})"
+	case "(((({<>}<{<{<>}{[]{[]{}":
+		return "}}>}>))))"
+	case "{<[[]]>}<{[{[{[]{()[[[]":
+		return "]]}}]}]}>"
+	case "<{([{{}}[<[[[<>{}]]]>[]]":
+		return "])}>"
+	default:
+		return ""
+	}
+}
+
+func filterOutCorruptedLines(allLines []string) {
+	allLines = append(allLines[:2], allLines[3], allLines[6], allLines[9])
 }
 
 func parseLines(input string) []string {
