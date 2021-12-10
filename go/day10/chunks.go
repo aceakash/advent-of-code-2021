@@ -1,6 +1,7 @@
 package day10
 
 import (
+	"fmt"
 	"github.com/aceakash/advent-of-code-2021/day10/stack"
 	"strings"
 )
@@ -9,7 +10,7 @@ func PartOne(input string) int {
 	lines := parseLines(input)
 
 	totalSyntaxErrorScore := 0
-	for _, line := range(lines) {
+	for _, line := range lines {
 		sec := syntaxErrorScore(line)
 		totalSyntaxErrorScore += sec
 	}
@@ -19,10 +20,11 @@ func PartOne(input string) int {
 func PartTwo(input string) int {
 	lines := parseLines(input)
 
-	filterOutCorruptedLines(lines)
+	incompleteLines := filterOutCorruptedLines(lines)
+	fmt.Println(incompleteLines)
 
 	completionScores := []int{}
-	for _, line := range(lines) {
+	for _, line := range incompleteLines {
 		seq := sequenceRequiredToClose(line)
 		completionScores = append(completionScores, calcCompletionScore(seq))
 	}
@@ -68,8 +70,15 @@ func sequenceRequiredToClose(line string) string {
 	}
 }
 
-func filterOutCorruptedLines(allLines []string) {
-	allLines = append(allLines[:2], allLines[3], allLines[6], allLines[9])
+func filterOutCorruptedLines(allLines []string) []string {
+	filtered := []string{}
+	for _, line := range allLines {
+		incomplete := FindFirstWrongCloser(line) == ""
+		if incomplete {
+			filtered = append(filtered, line)
+		}
+	}
+	return filtered
 }
 
 func parseLines(input string) []string {
@@ -81,7 +90,7 @@ func syntaxErrorScore(line string) int {
 	if wrong == "" {
 		return 0
 	}
-	scores := map[string]int {
+	scores := map[string]int{
 		")": 3,
 		"]": 57,
 		"}": 1197,
