@@ -42,20 +42,17 @@ func median(nums []int) int {
 }
 
 func calcCompletionScore(seq string) int {
-	switch seq {
-	case "}}]])})]":
-		return 288957
-	case ")}>]})":
-		return 5566
-	case "}}>}>))))":
-		return 1480781
-	case "]]}}]}]}>":
-		return 995444
-	case "])}>":
-		return 294
-	default:
-		return 0
+	values := map[rune]int {
+		')': 1,
+		']': 2,
+		'}': 3,
+		'>': 4,
 	}
+	total := 0
+	for _, r := range seq {
+		total = (5 * total) + values[r]
+	}
+	return total
 }
 
 func sequenceRequiredToClose(line string) string {
